@@ -1,0 +1,52 @@
+﻿@model List<DynamicRoleWeb.ViewModels.ActionsViewModel>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="row pb-3">
+    <div class="col-6">
+        <h4>Action Methods</h4>
+    </div>
+</div>
+@if(Model.Count > 0)
+{
+    <div>
+        <h4 class="text-decoration-underline">Controller Name - Action Method </h4>
+    </div>
+    @using (Html.BeginForm("AddActions", "UserMenu", FormMethod.Post))
+    {
+        <div class="form-group pb-2">
+            <ul style="list-style-type: none; padding-left:0px;">
+                @for (var i = 0; i < Model.Count; i++)
+                {
+                    <li>
+                        <input type="checkbox" class="controller-checkbox" data-index="@i" checked="@Model[i].IsPresent" />
+                        <label style="margin-left:10px" asp-for="@Model[i].ActionName">@Model[i].AreaControllerName - @Model[i].ActionName </label>
+                        <input type="hidden" name="list[@i].AreaControllerId" value="@Model[i].AreaControllerId" />
+                        <input type="hidden" name="list[@i].ActionName" value="@Model[i].ActionName" />
+                        <input type="hidden" name="list[@i].IsChecked" id="permitted-@i" value="@Model[i].IsChecked" />
+                    </li>
+                }
+            </ul>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Save" class="btn btn-primary" />
+        </div>
+    }
+
+}
+else
+{
+    <h2 class="text-danger">No Action is available now...</h2>
+}
+
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            $('.controller-checkbox').change(function () {
+                var index = $(this).data('index');
+                var isChecked = $(this).is(':checked');
+                $('#permitted-' + index).val(isChecked);
+            });
+        });
+    </script>
+}

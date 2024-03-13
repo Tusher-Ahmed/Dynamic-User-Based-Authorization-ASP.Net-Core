@@ -1,0 +1,34 @@
+﻿@model List<DynamicRoleWeb.ViewModels.MenuGroupViewModel>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="row pb-3">
+    <div class="col-6">
+        <h4>Areas</h4>
+    </div>
+    <div class="col-6 text-end">
+        @Html.ActionLink("Create Area", "CreateArea", "UserMenu",null, new {@class = "btn btn-primary" })
+    </div>
+</div>
+
+<table class="table table-striped table-hover">
+    <thead>
+        <tr>
+            <th>sl</th>
+            <th>Area Name</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            int i = 1;
+        }
+        @foreach(var item in Model)
+        {
+            <tr>
+                <td>@i</td>
+                <td>@item.AreaName</td>
+            </tr>
+            i++;
+        }
+    </tbody>
+</table>

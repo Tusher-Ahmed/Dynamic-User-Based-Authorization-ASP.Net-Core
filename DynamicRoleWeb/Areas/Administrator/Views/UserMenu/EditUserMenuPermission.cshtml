@@ -1,0 +1,61 @@
+﻿@model List<DynamicRoleWeb.ViewModels.UserMenuViewModel>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="row pb-3">
+    <div class="col-6">
+        <h4>Menu Permission for <span class="text-danger">@ViewBag.UserName</span> </h4>
+    </div>
+</div>
+@if(Model.Count > 0)
+{
+    <div class="pb-2">
+        <h4 class="text-decoration-underline">Area - Controller - Action </h4>
+    </div>
+    @using (Html.BeginForm("EditUserMenuPermission", "UserMenu", FormMethod.Post))
+    {
+        <div class="form-group pb-2">
+            <ul style="list-style-type: none; padding-left:0px;">
+                @for (var i = 0; i < Model.Count; i++)
+                {
+                    <li>
+                        <input type="checkbox" class="controller-checkbox" data-index="@i" checked="@Model[i].Permitted" />
+                        <label style="margin-left:10px" asp-for="@Model[i].ActionName">@Model[i].AreaName - @Model[i].ControllerName - @Model[i].ActionName </label>
+                        <input type="hidden" name="list[@i].Actionid" value="@Model[i].Actionid" />
+                        <input type="hidden" name="list[@i].UserId" value="@Model[i].UserId" />
+                        <input type="hidden" name="list[@i].IsChecked" id="permitted-@i" value="@Model[i].IsChecked" />
+                    </li>
+                }
+            </ul>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Save" class="btn btn-primary" />
+        </div>
+    }
+
+}
+else
+{
+    <div class="pb-2">
+        <h4 class="text-danger">No Menu Found...</h4>
+    </div>
+}
+
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            $('.controller-checkbox').each(function () {
+                var index = $(this).data('index');
+                var isChecked = $(this).is(':checked');
+                $('#permitted-' + index).val(isChecked);
+            });
+
+            $('.controller-checkbox').change(function () {
+                var index = $(this).data('index');
+                var isChecked = $(this).is(':checked');
+                $('#permitted-' + index).val(isChecked);
+            });
+        });
+    </script>
+}
+
