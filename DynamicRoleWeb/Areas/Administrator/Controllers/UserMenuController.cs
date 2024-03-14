@@ -206,5 +206,15 @@ namespace DynamicRoleWeb.Areas.Administrator.Controllers
 
             return RedirectToAction("Users");
         }
+
+        public IActionResult CheckControllerAccess()
+        {
+           // var actionList = new List<NameValueViewModel>();
+            var areaController = _dataAccessService.LoadAreaController();
+            ViewBag.AreaControllerList = new SelectList(areaController, "Id", "ControllerName");
+            List<SelectListItem> emptyList = new List<SelectListItem>();
+            ViewBag.ActionList = new SelectList(emptyList, "Value", "Text");
+            return View();
+        }
     }
 }

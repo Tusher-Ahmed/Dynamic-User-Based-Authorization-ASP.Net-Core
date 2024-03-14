@@ -260,6 +260,31 @@ LEFT JOIN MenuGroups AS mg ON mg.Id = ac.MenuGroupId
             var controllerList = GetControllerThrowReflection();
             return controllerList;
         }
+
+        public List<Actions> LoadActionNames(int areaControllerId)
+        {
+            var sql = @"
+SELECT
+a.Id,
+a.ActionName
+FROM Actions as a
+WHERE a.AreaControllerId = @AreaControllerId
+";
+            var result = LoadActionNamesUsingDapper(sql, new { AreaControllerId = areaControllerId });
+            return result;
+        }
+        public List<Actions> LoadActionNamesUsingDapper( string query, object parameters)
+        {
+            using (IDbConnection db = new SqlConnection(_context.Database.GetConnectionString()))
+            {
+                return db.Query<Actions>(query, parameters).ToList();
+            }
+        }
+
+        public List<AreaController> LoadAreaController()
+        {
+            return _context.AreaControllers.ToList();
+        }
         public void AddUserMenuPermission(List<UserMenuViewModel> model)
         {
             foreach (var item in model)

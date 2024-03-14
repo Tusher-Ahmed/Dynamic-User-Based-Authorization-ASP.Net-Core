@@ -22,5 +22,7 @@ namespace DynamicRoleWeb.Services
         bool isAlreadyPermitted(int actionId, string userId);
         void AddUserMenuPermission(List<UserMenuViewModel> model);
         List<AllPermissionMenuViewModel> GetAllMenus();
+        List<Actions> LoadActionNames(int areaControllerId);
+        List<AreaController> LoadAreaController();
     }
 }

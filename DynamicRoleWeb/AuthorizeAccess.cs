@@ -28,6 +28,7 @@ namespace DynamicRoleWeb
             var controllerName = actionDescriptor.RouteValues["controller"];
             var actionName = actionDescriptor.RouteValues["action"];
             var controllerType = filterContext.Controller.GetType();
+            var isAjaxRequest = filterContext.HttpContext.Request.Headers["X-Requested-With"] == "XMLHttpRequest";
             var hasAuthorizeC = controllerType.GetCustomAttributes(typeof(AuthorizeAttribute), true).Any();
             string authorizeKeyword = hasAuthorizeC ? "Authorize" : "";
 
@@ -36,7 +37,7 @@ namespace DynamicRoleWeb
                 var menuList = GetMenusByUsername(filterContext, name);
                 var isAllowedMenu = menuList.Where(x => x.ControllerName == controllerName && x.ActionName == actionName).Any();
 
-                if (!isAllowedMenu && authorizeKeyword != "" && authorizeAttributeName == null)
+                if (!isAllowedMenu && authorizeKeyword != "" && authorizeAttributeName == null && isAjaxRequest == false)
                 {
                     RedirectToPermissionDenied(filterContext);
                 }
